@@ -82,7 +82,7 @@ export function Orders() {
   const [maxItems, setMaxItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxRow, setMaxRow] = useState(10);
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("active");
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
@@ -92,13 +92,13 @@ export function Orders() {
   const [updatedData, setUpdatedData] = useState({});
   const [tabs, setTabs] = useState([
     {
-      label: "All",
-      value: "all",
+      label: "Active",
+      value: "active",
       count: 0,
     },
     {
-      label: "Active",
-      value: "active",
+      label: "All",
+      value: "all",
       count: 0,
     },
     {
@@ -149,8 +149,8 @@ export function Orders() {
     const result = await getOrdersCounts();
     if (result) {
       setTabs([
-        {label: "All", value: "all", count: result.total},
         {label: "Active", value: "active", count: result.active},
+        {label: "All", value: "all", count: result.total},
         {label: "Delivered", value: "delivered", count: result.available},
         {label: "Cancelled", value: "cancelled", count: result.cancelled},
         {label: "Abandoned", value: "abandoned", count: result.abandoned},
@@ -434,7 +434,9 @@ export function Orders() {
     const totalAmount = sub_orders
       .filter(
         (subOrder) =>
-          (subOrder.order_id === orderId && !subOrder.status_id.sorting === 5) || 6,
+          subOrder.order_id === orderId &&
+          subOrder.status_id.sorting !== 5 &&
+          subOrder.status_id.sorting !== 6,
       )
       .reduce((sum, subOrder) => sum + (subOrder.total_amount || 0), 0);
 
@@ -456,7 +458,7 @@ export function Orders() {
               </div>
             </div>
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-              <Tabs value="all" className="w-full md:w-max">
+              <Tabs value="active" className="w-full md:w-max">
                 <TabsHeader>
                   {tabs.map(({label, value, count}) => (
                     <Tab
@@ -567,7 +569,12 @@ export function Orders() {
                           <>
                             <tr key={index} className="h-28">
                               <td
-                                className={`${classes} bg-orange-400 relative w-28 border-r`}>
+                                rowSpan={
+                                  sub_orders.length < 1 ? 1 : id === expandedOrder ? 3 : 2
+                                }
+                                className={`${classes}  relative w-28 border-r ${
+                                  table_id?.is_booked ? "bg-orange-400" : "bg-gray-400"
+                                }`}>
                                 <div className="flex items-center gap-3 justify-end">
                                   <div className="flex flex-col items-center relative w-full justify-center">
                                     <Typography
@@ -753,7 +760,7 @@ export function Orders() {
                                       color="blue-gray"
                                       className="font-medium opacity-70 text-xs">
                                       {WEB_CONFIG?.currencySymbol}
-                                      {total_amount}
+                                      {total_amount.toFixed(2)}
                                     </Typography>
                                   </div>
 
@@ -809,7 +816,9 @@ export function Orders() {
                                       className="font-medium opacity-70 text-xs">
                                       {tip_amount < 1
                                         ? "N/A"
-                                        : `${WEB_CONFIG?.currencySymbol}${tip_amount}`}
+                                        : `${
+                                            WEB_CONFIG?.currencySymbol
+                                          }${tip_amount.toFixed(2)}`}
                                     </Typography>
                                   </div>
 
@@ -835,20 +844,6 @@ export function Orders() {
                                       ).toFixed(2)}
                                     </Typography>
                                   </div>
-                                  {/* <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-medium text-sm">
-                                    Main Order : {WEB_CONFIG?.currencySymbol}
-                                    {grand_amount.toFixed(2)}
-                                  </Typography>
-                                  <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-medium">
-                                    Total Sub Order : {WEB_CONFIG?.currencySymbol}
-                                    {grand_amount.toFixed(2)}
-                                  </Typography> */}
                                 </div>
                               </td>
                               <td className={classes}>
@@ -1106,12 +1101,33 @@ export function Orders() {
                             </tr>
                             {sub_orders.length > 0 && (
                               <tr>
-                                <td colSpan={10}>
+                                <td colSpan={10} className="relative">
+                                  <div
+                                    className={`w-2 h-full top-0 absolute left-0 bg-opacity-80   ${
+                                      status_id?.sorting === 1
+                                        ? "bg-blue-500"
+                                        : status_id?.sorting === 2
+                                        ? "bg-green-500"
+                                        : status_id?.sorting === 3
+                                        ? "bg-orange-500"
+                                        : status_id?.sorting === 4
+                                        ? "bg-gray-500"
+                                        : status_id?.sorting === 5
+                                        ? "bg-red-500"
+                                        : status_id?.sorting === 6
+                                        ? "bg-brown-500"
+                                        : "bg-gray-500"
+                                    }`}
+                                  />
                                   <h3
                                     onClick={() => {
                                       toggleExpand(id);
                                     }}
-                                    className="flex items-center gap-2 cursor-pointer select-none hover:bg-green-50/50 normal-case text-md p-3 font-medium text-green-500 underline underline-offset-4 decoration-dotted">
+                                    className={`flex items-center gap-2 ml-3 cursor-pointer select-none hover:bg-green-50/50 normal-case text-md p-3 font-medium underline underline-offset-4 decoration-dotted ${
+                                      table_id.is_booked
+                                        ? "text-green-500 hover:bg-green-50/50"
+                                        : "text-gray-500 hover:bg-gray-50/50"
+                                    }`}>
                                     View {sub_orders.length} Sub Orders
                                     <ChevronDown
                                       className={`${
@@ -1123,15 +1139,34 @@ export function Orders() {
                               </tr>
                             )}
                             {expandedOrder === id && (
-                              <tr>
+                              <tr className="border-b-8 border-white">
                                 <td colSpan={10}>
-                                  <table className=" w-full min-w-max table-auto text-left">
+                                  <table className=" w-full min-w-max table-auto text-left ">
                                     <thead>
                                       <tr>
                                         {SUB_TABLE_HEAD.map((head, index) => (
                                           <th
                                             key={index}
-                                            className="border-b border-blue-gray-100 bg-blue-gray-50/25 p-4 transition-colors">
+                                            className="border-b border-blue-gray-100 bg-blue-gray-50/25 p-4 transition-colors relative">
+                                            {index === 0 && (
+                                              <div
+                                                className={`w-2 h-full top-0 absolute left-0 bg-opacity-80  ${
+                                                  status_id?.sorting === 1
+                                                    ? "bg-blue-500"
+                                                    : status_id?.sorting === 2
+                                                    ? "bg-green-500"
+                                                    : status_id?.sorting === 3
+                                                    ? "bg-orange-500"
+                                                    : status_id?.sorting === 4
+                                                    ? "bg-gray-500"
+                                                    : status_id?.sorting === 5
+                                                    ? "bg-red-500"
+                                                    : status_id?.sorting === 6
+                                                    ? "bg-brown-500"
+                                                    : "bg-gray-500"
+                                                }`}
+                                              />
+                                            )}
                                             <Typography
                                               variant="small"
                                               color="blue-gray"

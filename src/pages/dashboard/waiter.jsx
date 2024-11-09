@@ -26,6 +26,7 @@ import {
   IconButton,
   Tooltip,
   Spinner,
+  tooltip,
 } from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import * as Yup from "yup";
@@ -370,8 +371,14 @@ export function WaiterTable() {
                                 variant="small"
                                 color="blue-gray"
                                 className="font-normal">
-                                {WEB_CONFIG.currencySymbol}
-                                {totalTips.toFixed(2)}
+                                {totalTips === 0 ? (
+                                  "N/A"
+                                ) : (
+                                  <>
+                                    {WEB_CONFIG.currencySymbol}
+                                    {totalTips.toFixed(2)}
+                                  </>
+                                )}
                               </Typography>
                             </div>
                           </div>

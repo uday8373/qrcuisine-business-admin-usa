@@ -305,11 +305,11 @@ export function ViewOrderDrawer({closeDrawer, open, selectedData, toggleDrawer})
       <div className="flex flex-col gap-1">
         <div className="flex justify-between gap-3">
           <Typography variant="paragraph" color="blue-gray" className="font-semibold">
-            Total
+            Total Amount
           </Typography>
           <Typography variant="lead" color="green" className="font-semibold">
             {WEB_CONFIG?.currencySymbol}
-            {selectedData?.grand_amount.toFixed(2)}
+            {selectedData?.total_amount.toFixed(2)}
           </Typography>
         </div>
       </div>

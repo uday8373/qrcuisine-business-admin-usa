@@ -1,10 +1,10 @@
 export const WEB_CONFIG = {
   logo: "/logo-business.svg",
   short_logo: "/short_logo.svg",
-  isProduction: false,
+  isProduction: true,
   productionVersion: "1.0.P",
-  developementVersion: "1.1.D",
-  productionBaseUrl: "https://qrcuisine.com",
+  developementVersion: "1.0.D",
+  productionBaseUrl: "https://usa.qrcuisine.com",
   developementBaseUrl: "https://qrcfrontend.netlify.app",
   currencySymbol: "$",
   taxTitle: "Sales Tax",

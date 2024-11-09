@@ -2,9 +2,9 @@ import {createClient} from "@supabase/supabase-js";
 import {WEB_CONFIG} from "./website-config";
 
 // Production credentials
-const prodSupabaseUrl = "https://guvhwgqilmxiddtpepqk.supabase.co";
+const prodSupabaseUrl = "https://nvvsoihxmczidolcqgru.supabase.co";
 const prodSupabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1dmh3Z3FpbG14aWRkdHBlcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgzMDA3NTUsImV4cCI6MjAzMzg3Njc1NX0.WMj8gltXqT_TlhGCABsFSUz4O2zmSTMnQHGwY1Zv-Kk";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52dnNvaWh4bWN6aWRvbGNxZ3J1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2NjU0NzcsImV4cCI6MjA0NTI0MTQ3N30.KS8f8i-t56eYVYYz9U_XVVp5R8QMIKHvjF4GViqqoL4";
 
 // Development credentials
 const devSupabaseUrl = "https://icyaglvxuziqfcxwtymo.supabase.co";

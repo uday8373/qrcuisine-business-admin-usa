@@ -208,7 +208,8 @@ export default function Tips() {
                             variant="small"
                             color="blue-gray"
                             className="font-normal">
-                            {WEB_CONFIG.currencySymbol}
+                            {!restaurant_id?.is_tip_percentage &&
+                              WEB_CONFIG.currencySymbol}
                             {amount.toFixed(2)}{" "}
                             {restaurant_id?.is_tip_percentage ? " %" : ""}
                           </Typography>

@@ -133,14 +133,14 @@ export function Home() {
       const totalAmount = orderResponse.currentData
         .filter((order) => order.is_delivered)
         .reduce((accumulator, order) => {
-          return accumulator + order.final_amount;
+          return accumulator + Number(order.final_amount);
         }, 0);
       setOrderTotalAmount(totalAmount);
 
       const previousTotalAmount = orderResponse.previousData
         .filter((order) => order.is_delivered)
         .reduce((accumulator, order) => {
-          return accumulator + order.final_amount;
+          return accumulator + Number(order.final_amount);
         }, 0);
       const orderTotalAmountChange = calculatePercentageChange(
         totalAmount,
@@ -371,7 +371,7 @@ export function Home() {
         if (item.is_delivered) {
           const dateKey = moment(item.created_at).format(timeFormat);
           if (revenueChartDataMap[dateKey]) {
-            revenueChartDataMap[dateKey].totalRevenue += item.final_amount;
+            revenueChartDataMap[dateKey].totalRevenue += Number(item.final_amount);
           }
         }
       });

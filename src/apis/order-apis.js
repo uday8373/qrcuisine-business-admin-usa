@@ -12,7 +12,6 @@ export async function getAllOrders(page, pageSize, status, searchQuery) {
         },
       )
       .eq("restaurant_id", restaurantId)
-      .order("is_delivered", {ascending: true})
       .order("created_at", {ascending: false})
       .range((page - 1) * pageSize, page * pageSize - 1)
       .limit(pageSize);
@@ -22,11 +21,13 @@ export async function getAllOrders(page, pageSize, status, searchQuery) {
       query = query
         .eq("is_delivered", false)
         .eq("is_cancelled", false)
-        .eq("is_abandoned", false);
+        .eq("is_abandoned", false)
+        .eq("sub_orders.is_delivered", false)
+        .eq("sub_orders.is_cancelled", false);
     } else if (status === "delivered") {
-      query = query.eq("is_delivered", true);
+      query = query.eq("is_delivered", true).eq("sub_orders.is_delivered", true);
     } else if (status === "cancelled") {
-      query = query.eq("is_cancelled", true);
+      query = query.eq("is_cancelled", true).eq("sub_orders.is_cancelled", true);
     } else if (status === "abandoned") {
       query = query.eq("is_abandoned", true);
     }
@@ -52,7 +53,9 @@ export async function getOrdersCounts() {
   try {
     const {data, error} = await supabase
       .from("orders")
-      .select("is_delivered, is_cancelled, is_abandoned")
+      .select(
+        `is_delivered, is_cancelled, is_abandoned, id, sub_orders(id, is_delivered, is_cancelled)`,
+      )
       .eq("restaurant_id", restaurantId);
 
     if (error) {
@@ -60,10 +63,27 @@ export async function getOrdersCounts() {
     }
 
     const total = data.length;
-    const available = data.filter((item) => item.is_delivered).length;
-    const active = data.filter(
-      (item) => !item.is_delivered && !item.is_cancelled && !item.is_abandoned,
-    ).length;
+
+    const available = data.filter((item) => {
+      if (item.sub_orders > 0) {
+        return item.is_delivered && item.sub_orders.is_delivered;
+      }
+      return item.is_delivered;
+    }).length;
+
+    const active = data.filter((item) => {
+      if (item.sub_orders.length > 0) {
+        return (
+          !item.is_delivered &&
+          !item.is_cancelled &&
+          !item.is_abandoned &&
+          !item.sub_orders.is_delivered &&
+          !item.sub_orders.is_cancelled
+        );
+      }
+      return !item.is_delivered && !item.is_cancelled && !item.is_abandoned;
+    }).length;
+
     const unAvailable = total - available;
     const cancelled = data.filter((item) => item.is_cancelled).length;
     const abandoned = data.filter((item) => item.is_abandoned).length;
