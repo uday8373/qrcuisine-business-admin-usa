@@ -52,7 +52,6 @@ export default function Tips() {
     try {
       const tipsResult = await getTipsApis();
       if (tipsResult) {
-        console.log("first", tipsResult.data);
         setIsPercentage(tipsResult.data[0]?.restaurant_id?.is_tip_percentage);
         getTips(tipsResult.data);
       }
@@ -114,7 +113,6 @@ export default function Tips() {
     try {
       const updatedData = await updatedTipsPercentage(newValue);
       fatchTipsData();
-      console.log("Data updated successfully:", updatedData);
     } catch (error) {
       console.error("Error updating tips percentage:", error);
     }

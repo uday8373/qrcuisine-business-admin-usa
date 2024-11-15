@@ -52,7 +52,6 @@ export function UpdateFoodModal({
       sub_category: "",
     });
     fetchSubCategoryData(value);
-    console.log("Form data after category change:", formData);
   };
   const handleSubCategoryChange = (value) => {
     setFormData({
@@ -128,7 +127,6 @@ export function UpdateFoodModal({
   const fetchSubCategoryData = async (category_id) => {
     const subCategoryResult = await getAllSubCategorys(category_id);
     if (subCategoryResult) {
-      console.log("object is ", subCategoryResult);
       setSubCategoryData(subCategoryResult);
     } else {
       setSubCategoryData([]);

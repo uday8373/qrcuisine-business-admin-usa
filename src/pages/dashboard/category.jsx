@@ -154,7 +154,6 @@ export function Category() {
     const isValid = await validateForm();
     if (!isValid) return;
 
-    console.log("object", formData);
     setFormLoading(true);
     try {
       await insertCategory(formData);

@@ -140,8 +140,6 @@ export function UpdateCategoryModal({
     ...emojiIcons.filter((icon) => icon !== formData.icon),
   ];
 
-  console.log("object", formData);
-
   return (
     <>
       <Dialog size="sm" open={open} handler={handleOpen} className="p-4">
@@ -245,34 +243,6 @@ export function UpdateCategoryModal({
               )}
             </div>
           </div>
-
-          {/* <div className="w-full h-full relative">
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="mb-2 text-left font-medium">
-              Category Icon
-            </Typography>
-            <Card className=" overflow-y-auto h-56 border border-gray-400  w-full">
-              <CardBody>
-                <div className="grid grid-cols-6 gap-2">
-                  {emojiIcons.map((icon) => (
-                    <button
-                      key={icon}
-                      type="button"
-                      onClick={() => handleIconSelect(icon)}
-                      className={`p-2 border rounded-md ${
-                        formData.icon === icon
-                          ? "border-blue-500 border-2 border-dashed"
-                          : "border-gray-300"
-                      } hover:border-blue-400`}>
-                      <span className="text-xl">{icon}</span>
-                    </button>
-                  ))}
-                </div>
-              </CardBody>
-            </Card>
-          </div> */}
 
           <div className="w-full h-full relative">
             <Typography

@@ -563,8 +563,6 @@ export function Orders() {
                           ? "p-4 border-t border-blue-gray-50"
                           : "p-4 border-t border-blue-gray-50";
 
-                        console.log("restaurant ID:", restaurant_id);
-
                         return (
                           <>
                             <tr key={index} className="h-28">

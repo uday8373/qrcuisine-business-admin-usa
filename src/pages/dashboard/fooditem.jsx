@@ -532,7 +532,7 @@ export function FoodItems() {
                                 color="blue-gray"
                                 className="font-normal">
                                 {WEB_CONFIG?.currencySymbol}
-                                {price}.00
+                                {price?.toFixed(2)}
                               </Typography>
                               <Typography
                                 variant="small"

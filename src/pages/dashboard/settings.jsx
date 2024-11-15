@@ -55,7 +55,6 @@ const Settings = () => {
     const restaurantResult = await getRestaurant();
 
     if (restaurantResult) {
-      console.log("object is ", restaurantResult);
       setData(restaurantResult);
     }
     setLoading(false);

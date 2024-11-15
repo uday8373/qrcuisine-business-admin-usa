@@ -24,6 +24,9 @@ import Messages from "./pages/dashboard/messages";
 import ActivityTable from "./pages/dashboard/activity-table";
 import Tips from "./pages/dashboard/tips";
 import SubCategory from "./pages/dashboard/sub-category";
+import QuickInstruction from "./pages/dashboard/sides&options";
+import {NotepadText} from "lucide-react";
+import SideAndOptions from "./pages/dashboard/sides&options";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -58,6 +61,12 @@ export const routes = [
         element: <Tables />,
       },
       {
+        icon: <CubeIcon {...icon} />,
+        name: "orders",
+        path: "/orders",
+        element: <Orders />,
+      },
+      {
         icon: <QueueListIcon {...icon} />,
         name: "category",
         path: "/category",
@@ -76,11 +85,12 @@ export const routes = [
         element: <FoodItems />,
       },
       {
-        icon: <CubeIcon {...icon} />,
-        name: "orders",
-        path: "/orders",
-        element: <Orders />,
+        icon: <NotepadText {...icon} />,
+        name: "Sides & options",
+        path: "/sides-and-options",
+        element: <SideAndOptions />,
       },
+
       {
         icon: <UserGroupIcon {...icon} />,
         name: "waiters",
@@ -93,6 +103,7 @@ export const routes = [
         path: "/table-activity",
         element: <ActivityTable />,
       },
+
       {
         icon: <StarIcon {...icon} />,
         name: "Ratings",

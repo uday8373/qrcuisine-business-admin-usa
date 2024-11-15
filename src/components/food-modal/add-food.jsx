@@ -127,7 +127,6 @@ export function AddFoodModal({
   const fetchSubCategoryData = async (category_id) => {
     const subCategoryResult = await getAllSubCategorys(category_id);
     if (subCategoryResult) {
-      console.log("object is ", subCategoryResult);
       setSubCategoryData(subCategoryResult);
     }
   };

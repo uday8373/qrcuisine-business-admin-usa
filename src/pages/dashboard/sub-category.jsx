@@ -93,7 +93,6 @@ export default function SubCategory() {
     );
     if (subCategoryResult) {
       setSubCategoryData(subCategoryResult.data);
-      console.log("subCategoryResult", subCategoryResult);
       setMaxItems(subCategoryResult.count);
     }
     setLoading(false);
@@ -164,7 +163,6 @@ export default function SubCategory() {
     const isValid = await validateForm();
     if (!isValid) return;
 
-    console.log("object", formData);
     setFormLoading(true);
     try {
       await insertSubCategory(formData);

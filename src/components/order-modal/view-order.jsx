@@ -61,8 +61,6 @@ export function ViewOrderDrawer({closeDrawer, open, selectedData, toggleDrawer})
     };
   });
 
-  console.log("Merged Array", mergedArr);
-
   return (
     <Drawer
       overlay={true}
